@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Product } from 'src/app/products/entities/product.entity';
+import { Product } from '../../products/entities/product.entity';
 import { CreateClaimDto } from './create-claim.dto';
 
 export class UpdateClaimDto extends PartialType(CreateClaimDto) {

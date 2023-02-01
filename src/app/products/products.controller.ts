@@ -25,11 +25,11 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { PageOptionsDto } from 'src/common/pages/dto/page-options.dto';
-import { ApiPaginatedResponse } from 'src/common/pages/decorator/api-pagination.decorator';
+import { ApiPaginatedResponse } from '../../common/pages/decorator/api-pagination.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { Roles } from '../auth/decorator/roles/roles.decorator';
+import { PageOptionsDto } from '../../common/pages/dto/page-options.dto';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RoleGuard)

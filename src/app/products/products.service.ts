@@ -1,12 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PageMetaDto } from 'src/common/pages/dto/page-meta.dto';
-import { PageOptionsDto } from 'src/common/pages/dto/page-options.dto';
-import { PageDto } from 'src/common/pages/dto/page.dto';
+import { PageMetaDto } from '../../common/pages/dto/page-meta.dto';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
+import { PageOptionsDto } from '../../common/pages/dto/page-options.dto';
+import { PageDto } from '../../common/pages/dto/page.dto';
 
 @Injectable()
 export class ProductsService {
@@ -46,13 +50,18 @@ export class ProductsService {
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
-    await this.productRepository.update(id, updateProductDto);
     const updateProduct = await this.productRepository.findOneBy({ id });
-    if (updateProduct) {
-      return updateProduct;
+    if (!updateProduct) {
+      throw new NotFoundException(`Product ${id} Not Found`);
     }
+    try {
+      updateProduct.name = updateProductDto.name;
+      updateProduct.description = updateProductDto.description;
 
-    throw new NotFoundException(`Product ${id} Not Found`);
+      return await this.productRepository.save(updateProduct);
+    } catch (err) {
+      throw new InternalServerErrorException('Something went wrong');
+    }
   }
 
   async remove(id: number) {

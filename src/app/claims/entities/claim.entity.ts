@@ -1,5 +1,3 @@
-import { Product } from 'src/app/products/entities/product.entity';
-import { User } from 'src/app/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,6 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Product } from '../../products/entities/product.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Claim {

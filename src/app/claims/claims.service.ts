@@ -4,14 +4,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PageMetaDto } from 'src/common/pages/dto/page-meta.dto';
-import { PageOptionsDto } from 'src/common/pages/dto/page-options.dto';
-import { PageDto } from 'src/common/pages/dto/page.dto';
+import { PageMetaDto } from '../../common/pages/dto/page-meta.dto';
+import { PageOptionsDto } from '../../common/pages/dto/page-options.dto';
+import { PageDto } from '../../common/pages/dto/page.dto';
 import { Repository } from 'typeorm';
 import { CreateClaimDto } from './dto/create-claim.dto';
 import { StatusDto } from './dto/status.dto';
 import { UpdateClaimDto } from './dto/update-claim.dto';
 import { Claim } from './entities/claim.entity';
+import { GuardDto } from '../auth/dto/guard.dto';
 
 @Injectable()
 export class ClaimsService {
@@ -19,8 +20,13 @@ export class ClaimsService {
     @InjectRepository(Claim) private claimRepository: Repository<Claim>,
   ) {}
 
-  async create(createClaimDto: CreateClaimDto) {
-    const newClaim = this.claimRepository.create(createClaimDto);
+  async create(createClaimDto: CreateClaimDto, user: GuardDto) {
+    const newClaim = this.claimRepository.create({
+      customer: {
+        id: user.id,
+      },
+      ...createClaimDto,
+    });
     try {
       await this.claimRepository.insert(newClaim);
 
@@ -90,7 +96,7 @@ export class ClaimsService {
     }
     try {
       updateClaim.description = updateClaimDto.description;
-      updateClaim.product = updateClaim.product;
+      updateClaim.product = updateClaimDto.product;
 
       return await this.claimRepository.save(updateClaim);
     } catch (err) {

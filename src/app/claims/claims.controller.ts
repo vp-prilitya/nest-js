@@ -11,6 +11,7 @@ import {
   Query,
   UseGuards,
   Put,
+  Request,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -23,9 +24,10 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { ApiPaginatedResponse } from 'src/common/pages/decorator/api-pagination.decorator';
-import { PageOptionsDto } from 'src/common/pages/dto/page-options.dto';
+import { ApiPaginatedResponse } from '../../common/pages/decorator/api-pagination.decorator';
+import { PageOptionsDto } from '../../common/pages/dto/page-options.dto';
 import { Roles } from '../auth/decorator/roles/roles.decorator';
+import { GuardDto } from '../auth/dto/guard.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { ClaimsService } from './claims.service';
@@ -47,11 +49,11 @@ export class ClaimsController {
   @ApiOperation({ summary: 'Create new claim' })
   @ApiCreatedResponse({ description: 'Created Successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  create(@Body() createClaimDto: CreateClaimDto) {
-    return this.claimsService.create(createClaimDto);
+  create(@Request() req, @Body() createClaimDto: CreateClaimDto) {
+    return this.claimsService.create(createClaimDto, req.user);
   }
 
-  @Roles('customer', 'staff')
+  @Roles('staff')
   @Get()
   @ApiOperation({ summary: 'List all data claim' })
   @HttpCode(HttpStatus.OK)
