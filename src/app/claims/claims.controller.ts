@@ -27,7 +27,6 @@ import {
 import { ApiPaginatedResponse } from '../../common/pages/decorator/api-pagination.decorator';
 import { PageOptionsDto } from '../../common/pages/dto/page-options.dto';
 import { Roles } from '../auth/decorator/roles/roles.decorator';
-import { GuardDto } from '../auth/dto/guard.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { ClaimsService } from './claims.service';

@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PageMetaDto } from '../../common/pages/dto/page-meta.dto';
 import { PageOptionsDto } from '../../common/pages/dto/page-options.dto';
 import { PageDto } from '../../common/pages/dto/page.dto';
-import { GuardDto } from '../auth/dto/guard.dto';
 import { Product } from '../products/entities/product.entity';
 import { User } from '../users/entities/user.entity';
 import { ClaimsController } from './claims.controller';
